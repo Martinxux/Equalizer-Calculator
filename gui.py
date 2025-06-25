@@ -183,12 +183,3 @@ class NumberCalculatorGUI(QMainWindow):
             QMessageBox.information(self, "历史记录", "今日暂无历史记录")
         except Exception as e:
             QMessageBox.critical(self, "错误", f"打开日志文件失败: {str(e)}")
-
-def main():
-    app = QApplication(sys.argv)
-    window = NumberCalculatorGUI()
-    window.show()
-    sys.exit(app.exec_())
-
-if __name__ == "__main__":
-    main()
