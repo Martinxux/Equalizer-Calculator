@@ -2,9 +2,9 @@ from PyQt5.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
     QLabel, QLineEdit, QPushButton, QMessageBox
 )
+from PyQt5.QtCore import Qt
 from calculator import NumberCalculator
 from datetime import datetime
-import sys
 import os
 
 class NumberCalculatorGUI(QMainWindow):
@@ -16,7 +16,7 @@ class NumberCalculatorGUI(QMainWindow):
     def init_ui(self):
         """初始化用户界面"""
         self.setWindowTitle("均衡计算器")
-        self.setFixedSize(800, 180)  # 固定窗口大小
+        self.setFixedSize(800, 220)  # 增加高度以容纳公式
         
         # 设置样式表
         self.setStyleSheet("""
@@ -92,12 +92,12 @@ class NumberCalculatorGUI(QMainWindow):
         result_layout = QHBoxLayout()
         input_group.addLayout(result_layout)
         
-        output_label = QLabel("结果:")
+        output_label = QLabel("均衡值转换结果:")
         self.result_display = QLineEdit()
         self.result_display.setReadOnly(True)
         # self.result_display.setFixedHeight(30)
         self.result_display.setPlaceholderText("计算结果将显示在这里...")
-        self.result_display.setStyleSheet("font-size: 18px; font-weight: bold;")
+        self.result_display.setStyleSheet("font-size: 18px")
         result_layout.addWidget(output_label)
         result_layout.addWidget(self.result_display)
         
@@ -114,7 +114,7 @@ class NumberCalculatorGUI(QMainWindow):
         note_layout = QHBoxLayout()
         note_history_layout.addLayout(note_layout)
         
-        note_label = QLabel("添加备注:")
+        note_label = QLabel("添加该参数备注:")
         self.note_field = QLineEdit()
         self.note_field.setPlaceholderText("计算后可添加备注信息，例如：Tdecq=1.5")
         
@@ -129,6 +129,12 @@ class NumberCalculatorGUI(QMainWindow):
         history_btn = QPushButton("查看历史")
         history_btn.clicked.connect(self.show_history)
         note_history_layout.addWidget(history_btn)
+
+        # 公式说明
+        formula_label = QLabel("计算公式: result[i] = round((input[i] / sum(abs(input))) * 1000)")
+        formula_label.setStyleSheet("font-size: 16px; color: #555; margin-top: 10px;")
+        formula_label.setAlignment(Qt.AlignCenter)
+        main_layout.addWidget(formula_label)
         
     def calculate(self):
         """执行计算并显示结果"""
