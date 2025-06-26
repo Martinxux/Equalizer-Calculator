@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import (
     QLabel, QLineEdit, QPushButton, QMessageBox, QStatusBar
 )
 from PyQt5.QtCore import Qt, QTimer
+from PyQt5.QtGui import QIcon
 from calculator import NumberCalculator
 from datetime import datetime
 import os
@@ -11,6 +12,7 @@ class NumberCalculatorGUI(QMainWindow):
     def __init__(self):
         super().__init__()
         self.calculator = NumberCalculator()
+        self.setWindowIcon(QIcon('./_internal/favicon.ico'))
         self.init_ui()
         
     def init_ui(self):
