@@ -25,23 +25,30 @@ class NumberCalculator:
         if result_str in self.calculation_history:
             self.calculation_history[result_str]['note'] = note
             # 记录备注更新日志
-            self.logger.info(f"更新前组数据备注:result ->{result_str}: {note}")
+            self.logger.info(f"更新上一组数据备注:Tap Tuner Result = {result_str}  |  备注: {note}")
 
-    def process_numbers(self, number_str: str, note: str = None) -> List[int]:
+    def process_numbers(self, number_str: str) -> List[int]:
         """
         处理数字字符串并返回计算结果
         
         参数:
             number_str: 逗号分隔的数字字符串
-            note: 可选备注信息(会自动保存)
             
         返回:
             处理后的整数列表
         """
+        # 分割字符串并转换为浮点数列表
         try:
-            # 分割字符串并转换为浮点数列表
             numbers = [float(x) for x in number_str.split(",")]
+        except ValueError:
+            raise ValueError("输入包含非数字字符")
             
+        # 验证输入数字之和必须严格等于1
+        total = sum(numbers)
+        if total != 1.0:
+            raise ValueError(f"输入数字之和不等于1，当前和为: {total}")
+            
+        try:    
             # 计算绝对值的和
             abs_sum = sum(abs(x) for x in numbers)
             
@@ -54,22 +61,17 @@ class NumberCalculator:
             # 生成结果字符串
             result_str = ",".join(map(str, result))
             
-            # 存储/更新计算结果和备注
+            # 存储计算结果
             self.calculation_history[result_str] = {
                 'input': number_str,
-                'note': note or '',
+                'note': '',
                 'timestamp': datetime.now()
             }
             
-            # 记录计算日志（包含备注）
-            log_msg = f"Input Tap Values: {number_str} | Result: {result_str}"
-            if note:
-                log_msg += f" | 备注: {note}"
-            self.logger.info(log_msg)
+            # 记录计算日志
+            self.logger.info(f"Input Tap Values: {number_str} | Tap Tuner Result: {result_str}")
             
             return result_str
             
-        except ValueError:
-            raise ValueError("输入包含非数字字符")
         except Exception as e:
-            raise Exception(f"处理过程中发生错误: {e}")            
+            raise Exception(f"处理过程中发生错误: {e}")

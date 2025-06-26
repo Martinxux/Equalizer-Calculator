@@ -1,8 +1,8 @@
 from PyQt5.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
-    QLabel, QLineEdit, QPushButton, QMessageBox
+    QLabel, QLineEdit, QPushButton, QMessageBox, QStatusBar
 )
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QTimer
 from calculator import NumberCalculator
 from datetime import datetime
 import os
@@ -92,7 +92,7 @@ class NumberCalculatorGUI(QMainWindow):
         result_layout = QHBoxLayout()
         input_group.addLayout(result_layout)
         
-        output_label = QLabel("均衡值转换结果:")
+        output_label = QLabel("Tap Tuner Result:")
         self.result_display = QLineEdit()
         self.result_display.setReadOnly(True)
         # self.result_display.setFixedHeight(30)
@@ -135,6 +135,11 @@ class NumberCalculatorGUI(QMainWindow):
         formula_label.setStyleSheet("font-size: 16px; color: #555; margin-top: 10px;")
         formula_label.setAlignment(Qt.AlignCenter)
         main_layout.addWidget(formula_label)
+
+        # 添加状态栏
+        self.statusBar = QStatusBar()
+        self.statusBar.setStyleSheet("font-size: 14px; color: #333;")
+        self.setStatusBar(self.statusBar)
         
     def calculate(self):
         """执行计算并显示结果"""
@@ -144,7 +149,7 @@ class NumberCalculatorGUI(QMainWindow):
             return
             
         try:
-            # 处理数字但不带备注
+            # 处理数字输入
             result = self.calculator.process_numbers(input_text)
             self.result_display.setText(result)
             self.last_result = result  # 保存计算结果
@@ -154,7 +159,23 @@ class NumberCalculatorGUI(QMainWindow):
     def copy_result(self):
         """复制当前结果到剪贴板"""
         clipboard = QApplication.clipboard()
-        clipboard.setText(self.result_display.text())
+        text = self.result_display.text()
+        copy_btn = self.sender()  # 获取触发按钮
+        
+        if text:
+            clipboard.setText(text)
+            # 保存原始按钮文本
+            if not hasattr(self, 'original_copy_btn_text'):
+                self.original_copy_btn_text = copy_btn.text()
+            
+            # 设置成功图标
+            copy_btn.setText("✅")
+            
+            # 2秒后恢复原始按钮
+            QTimer.singleShot(2000, lambda: copy_btn.setText(self.original_copy_btn_text))
+        else:
+            self.statusBar.showMessage("没有可复制的内容")
+            QTimer.singleShot(3000, self.statusBar.clearMessage)
         
     def save_note(self):
         """保存计算结果备注"""
