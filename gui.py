@@ -18,7 +18,7 @@ class NumberCalculatorGUI(QMainWindow):
     def init_ui(self):
         """初始化用户界面"""
         self.setWindowTitle("均衡计算器")
-        self.setFixedSize(800, 220)  # 增加高度以容纳公式
+        self.setFixedSize(860, 220)  # 增加高度以容纳公式
         
         # 设置样式表
         self.setStyleSheet("""
@@ -160,8 +160,12 @@ class NumberCalculatorGUI(QMainWindow):
             numbers = [float(x) for x in input_text.split(",")]
             total = sum(numbers)
             if abs(total - 1.0) > 1e-9:  # 考虑浮点精度
-                self.statusBar.showMessage(f"警告: 输入和不为1 (当前和: {total:.6f})")
-                QTimer.singleShot(5000, self.statusBar.clearMessage)
+                self.statusBar.showMessage(f"警告: 输入和不为1 (当前和: {total:.10f})")
+                self.statusBar.setStyleSheet("color: #FF8C00; font-size: 16px;")  # 橙黄色
+                QTimer.singleShot(5000, lambda: [
+                    self.statusBar.clearMessage(),
+                    self.statusBar.setStyleSheet("font-size: 16px; color: #333;")
+                ])
                 
         except Exception as e:
             QMessageBox.critical(self, "计算错误", str(e))
