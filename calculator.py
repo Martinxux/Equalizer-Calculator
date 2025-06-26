@@ -43,10 +43,10 @@ class NumberCalculator:
         except ValueError:
             raise ValueError("输入包含非数字字符")
             
-        # 验证输入数字之和必须严格等于1
+        # 检查输入数字之和是否为1
         total = sum(numbers)
         if total != 1.0:
-            raise ValueError(f"输入数字之和不等于1，当前和为: {total}")
+            self.logger.warning(f"输入数字之和不等于1，当前和为: {total} (计算将继续进行)")
             
         try:    
             # 计算绝对值的和

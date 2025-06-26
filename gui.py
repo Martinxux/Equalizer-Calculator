@@ -155,8 +155,16 @@ class NumberCalculatorGUI(QMainWindow):
             result = self.calculator.process_numbers(input_text)
             self.result_display.setText(result)
             self.last_result = result  # 保存计算结果
+            
+            # 检查输入和是否为1
+            numbers = [float(x) for x in input_text.split(",")]
+            total = sum(numbers)
+            if abs(total - 1.0) > 1e-9:  # 考虑浮点精度
+                self.statusBar.showMessage(f"警告: 输入和不为1 (当前和: {total:.6f})")
+                QTimer.singleShot(5000, self.statusBar.clearMessage)
+                
         except Exception as e:
-            QMessageBox.critical(self, "计算错误", str(e))   
+            QMessageBox.critical(self, "计算错误", str(e))
             
     def copy_result(self):
         """复制当前结果到剪贴板"""
