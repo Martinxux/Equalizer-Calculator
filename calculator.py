@@ -20,6 +20,13 @@ class NumberCalculator:
         ))
         self.logger.addHandler(file_handler)
         
+    def update_note(self, result_str: str, note: str):
+        """更新已有计算结果的备注"""
+        if result_str in self.calculation_history:
+            self.calculation_history[result_str]['note'] = note
+            # 记录备注更新日志
+            self.logger.info(f"更新前组数据备注:result ->{result_str}: {note}")
+
     def process_numbers(self, number_str: str, note: str = None) -> List[int]:
         """
         处理数字字符串并返回计算结果

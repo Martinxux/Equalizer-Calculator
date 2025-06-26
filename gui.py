@@ -170,9 +170,8 @@ class NumberCalculatorGUI(QMainWindow):
                 QMessageBox.warning(self, "操作错误", "请先进行计算!")
                 return
                 
-            # 直接更新最新日志记录的备注
-            input_numbers = self.input_field.text().split(maxsplit=1)[0]
-            self.calculator.process_numbers(input_numbers, note)
+            # 直接更新备注
+            self.calculator.update_note(current_result, note)
             
             QMessageBox.information(self, "保存成功", "备注已保存!")
             self.note_field.clear()
