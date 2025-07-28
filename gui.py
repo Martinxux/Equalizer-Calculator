@@ -216,7 +216,7 @@ class NumberCalculatorGUI(QMainWindow):
             
     def show_history(self):
         """直接打开日志文件"""
-        log_file = f'number_calculator_log_{datetime.now().strftime("%Y%m%d")}.log'
+        log_file = os.path.join('logs', f'number_calculator_log_{datetime.now().strftime("%Y%m%d")}.log')
         try:
             os.startfile(log_file)
         except FileNotFoundError:

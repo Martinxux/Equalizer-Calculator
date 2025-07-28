@@ -1,4 +1,5 @@
 import logging
+import os
 from typing import List
 from datetime import datetime
 
@@ -13,7 +14,7 @@ class NumberCalculator:
         self.logger.setLevel(logging.INFO)
         
         # 按天创建日志文件
-        log_filename = f'number_calculator_log_{datetime.now().strftime("%Y%m%d")}.log'
+        log_filename = os.path.join('logs', f'number_calculator_log_{datetime.now().strftime("%Y%m%d")}.log')
         file_handler = logging.FileHandler(log_filename)
         file_handler.setFormatter(logging.Formatter(
             '%(asctime)s - %(message)s'
