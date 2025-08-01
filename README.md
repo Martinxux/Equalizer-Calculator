@@ -1,3 +1,4 @@
+# 功能已集成到[DataMaster](https://github.com/Martinxux/DataMaster#)
 # 均衡计算器 (Equalizer Calculator)
 
 ## 项目概述
